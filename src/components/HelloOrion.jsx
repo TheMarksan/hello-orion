@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HelloOrion.css';
 
 const translations = {
@@ -14,13 +14,23 @@ const translations = {
 
 export default function HelloOrion() {
   const [language, setLanguage] = useState('en');
+  const [theme, setTheme] = useState('light');
+
+  // Aplica a classe do tema ao body
+  useEffect(() => {
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(theme);
+  }, [theme]);
+
+  // Alterna entre os temas
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   return (
     <div className="container">
       <div className="content">
-        <h1 className="title">
-          {translations[language]}
-        </h1>
+        <h1 className="title">{translations[language]}</h1>
 
         <div className="select-container">
           <select
@@ -37,6 +47,10 @@ export default function HelloOrion() {
             <option value="ja">🇯🇵 日本語</option>
             <option value="zh">🇨🇳 中文</option>
           </select>
+
+          <button onClick={toggleTheme} className="theme-toggle">
+            {theme === 'light' ? 'Dark' : 'Light'} theme 
+          </button>
         </div>
       </div>
     </div>
